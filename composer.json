@@ -1,4 +1,5 @@
 {
+  "name": "uusiti/diyi-sdk",
   "require": {
     "hanson/foundation-sdk": "^5.0",
     "php": ">=7.0"
