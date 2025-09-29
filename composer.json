@@ -1,5 +1,13 @@
 {
   "name": "uusiti/diyi-sdk",
+  "version": "1.0.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "uusiti",
+      "email": "fantasyoui@gmail.com"
+    }
+  ],
   "require": {
     "hanson/foundation-sdk": "^5.0",
     "php": ">=7.0"
