@@ -63,6 +63,9 @@ class Api extends AbstractAPI
         return md5( $body . $this->api_key . $nonce . $time );
     }
 
+    public function sign()
+    {}
+
     /**
      * @param $result
      * @throws DiYiException
