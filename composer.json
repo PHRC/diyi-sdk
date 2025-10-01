@@ -9,8 +9,9 @@
     }
   ],
   "require": {
+    "ext-json": "*",
     "hanson/foundation-sdk": "^5.0",
-    "php": ">=7.0"
+    "php": ">=7.4"
   },
   "autoload": {
     "psr-4": {
