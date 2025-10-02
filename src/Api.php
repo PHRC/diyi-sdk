@@ -66,6 +66,15 @@ class Api extends AbstractAPI
     public function sign()
     {}
 
+    public function nonce(): string
+    {
+        $str = '';
+        for( $i = 0; $i < 64; $i++ ) {
+            $str .= chr( rand( 33, 126 ) );
+        }
+        return $str;
+    }
+
     /**
      * @param $result
      * @throws DiYiException
