@@ -2,6 +2,8 @@
   "name": "uusiti/diyi-sdk",
   "version": "0.0.2",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "uusiti",
