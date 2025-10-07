@@ -12,17 +12,17 @@ class Api extends AbstractAPI
     //商户号
     protected string $merchant_no = '';
     //apikey
-    protected string $api_key = '';
+    protected string $secret_key = '';
     //节点地址
     protected string $gateway_address = '';
     //回调地址
     protected string $call_url = '';
 
 
-    public function __construct( string $merchant_no, string $api_key, string $gateway_address, string $call_url )
+    public function __construct( string $merchant_no, string $secret_key, string $gateway_address, string $call_url )
     {
         $this->merchant_no = $merchant_no;
-        $this->api_key = $api_key;
+        $this->secret_key = $secret_key;
         $this->gateway_address = $gateway_address;
         $this->call_url = $call_url;
     }
@@ -58,13 +58,28 @@ class Api extends AbstractAPI
         return $result;
     }
 
-    public function signature( $body, $time, $nonce )
+    public function timestamp(): float
     {
-        return md5( $body . $this->api_key . $nonce . $time );
+        return round( microtime( true ) * 1000 );
     }
 
-    public function sign()
-    {}
+    public function sign( array $array ): string
+    {
+        unset( $array[ 'sign' ] );
+        ksort( $array );
+        $arr = [];
+        $i = 0;
+        foreach( $array as $key => $value ) {
+            if( !empty( $value ) ) {
+                $arr[ $i++ ] = $key . '=' . $value;
+            }
+        }
+        //error_log( '[' . date( 'Y-m-d H:i:s' ) . '] $arr: ' .
+        //var_export( $arr, true ) . "\n", 3,
+        //__DIR__ . '/error_log.log' );
+
+        return hash_hmac( 'sha256', implode( '&', $arr ), $this->secret_key );
+    }
 
     public function nonce(): string
     {
