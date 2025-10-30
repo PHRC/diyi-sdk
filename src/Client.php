@@ -20,6 +20,11 @@ class Client extends Api
         ] );
     }
 
+    /**
+     * @param string $chain
+     * @return mixed
+     * @throws DiYiException
+     */
     public function verify_address( string $chain )
     {
         $client = new GuzzleHttpClient();
@@ -55,16 +60,26 @@ class Client extends Api
         string $mch_order_no,
         string $memo
     ) {
-        return $this->request_wrapper( '/api/withdrawal', [
-            'chain' => $chain,
-            'token' => $token,
-            'to' => $to,
-            'amount' => $amount,
-            'mch_order_no' => $mch_order_no,
-            'memo' => $memo,
-        ] );
+        $client = new GuzzleHttpClient();
+        $options = [
+            'form_params' => [
+                'chain' => $chain,
+                'token' => $token,
+                'to' => $to,
+                'amount' => $amount,
+                'mch_order_no' => $mch_order_no,
+                'memo' => $memo,
+            ],
+        ];
+        $request = new Request( 'POST', '/api/withdrawal' );
+        $res = $client->sendAsync( $request, $options )->wait();
+        return $res->getBody();
     }
 
+    /**
+     * @return mixed
+     * @throws DiYiException
+     */
     public function coins()
     {
         $client = new GuzzleHttpClient();
