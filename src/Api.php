@@ -33,6 +33,37 @@ class Api extends AbstractAPI
         $this->call_url = $call_url;
     }
 
+
+    /**
+     * @param string $method
+     * @param array $body
+     * @return mixed
+     * @throws DiYiException
+     */
+    public function request( string $method, array $body )
+    {
+        $time = time();
+        $nonce = rand( 100000, 999999 );
+        if( $method == '/mch/support-coins' ) {
+            $body = json_encode( $body );
+        } else {
+            $body = '[' . json_encode( $body ) . ']';
+        }
+
+        $sign = $this->signature( $body, $time, $nonce );
+        $params = [
+            'timestamp' => $time,
+            'nonce' => $nonce,
+            'sign' => $sign,
+            'body' => $body,
+        ];
+        $http = $this->getHttp();
+        $response = $http->json( $this->gateway_address . $method, $params );
+        $result = json_decode( strval( $response->getBody() ), true );
+        $this->checkErrorAndThrow( $result );
+        return $result;
+    }
+
     /**
      * @param string $api
      * @param array $body
